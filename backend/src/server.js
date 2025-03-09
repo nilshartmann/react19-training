@@ -34,21 +34,30 @@ app.use((req, _res, next) => {
 });
 
 app.get("/cards", (req, res) => {
-  let result = cards;
+  let result = [...cards];
+
+  const orderBy = req.query.orderBy || "date";
+
+  if (orderBy === "date") {
+    result.sort((a, b) => b.id.localeCompare(a.id));
+  } else if (orderBy === "likes") {
+    result.sort((a, b) => b.likes - a.likes);
+  }
 
   if (req.query.fail !== undefined) {
     result = result.map((a, ix) =>
       ix === 1
         ? {
-            ...a,
-            message: null
-          }
+          ...a,
+          message: null
+        }
         : a
     );
   }
 
   res.status(200).json(result);
 });
+
 
 const getCardById = (cardId) => cards.find(c => c.id === cardId);
 
@@ -73,25 +82,29 @@ app.post("/cards", (req, res) => {
     return res.status(400).json({ error: "card.message must be defined and not empty" });
   }
 
+  if (card.message.startsWith("fail")) {
+    return res.status(400).json({ error: "card.message should not start with 'fail'" });
+  }
+
   if (card.message.length < 5) {
     return res.status(400).json({ error: "card.message must have at least five chars" });
   }
 
-  if (card.imagePosition !== "left" && card.imagePosition !== "right") {
-    return res.status(400).json({ error: "card.imagePosition must be 'left' or 'right'" });
+  if (!card.imageName) {
+    return res.status(400).json({ error: "card.imageName must be defined and not empty" });
   }
 
-  if (!card.image?.name) {
-    return res.status(400).json({ error: "card.image.name must be defined and not empty" });
+  if (typeof card.imageDecoration !== "boolean") {
+    return res.status(400).json({ error: "card.imageDecoration must be a boolean" });
   }
 
   const newCard = {
     id: `C${cards.length + 1}`,
-    message: card.mesage,
-    imagePosition: card.imagePosition,
+    message: card.message,
     image: {
-      name: card.image.name,
-      caption: card.image.caption
+      name: card.imageName,
+      caption: card.imageCaption,
+      decoration: card.imageDecoration
     },
     likes: 0
   }

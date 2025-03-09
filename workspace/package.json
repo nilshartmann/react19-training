@@ -8,6 +8,7 @@
     "backend": "cd ../backend && npm start",
     "build": "tsc -b && vite build",
     "hello-world-test": "vitest --run hello-world",
+    "test:card-schema": "vitest card-schema",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
