@@ -1,10 +1,15 @@
 import CardImage from "./CardImage.tsx";
 
 export default function App() {
-  return (
-    <div className={"container mx-auto pt-8"}>
+  const title = <h1>Hello World</h1>;
+
+  // REACT FRAGMENT:
+  const myImages = (
+    <>
       <CardImage name={"03.png"} decoration={false} caption={"Hello Image"} />
       <CardImage name={"04.png"} decoration={false} />
-    </div>
+    </>
   );
+
+  return <div className={"container mx-auto pt-8"}>{myImages}</div>;
 }
