@@ -38,30 +38,11 @@ export default function CardImage({
     ? "CardImage CardImageDecoration"
     : "CardImage";
 
-  let captionElement;
-  if (caption) {
-    captionElement = <div className="CardImageCaption">{caption}</div>;
-  }
-
-  const captionElement2 =
-    caption === undefined ? null : (
-      <div className="CardImageCaption">{caption}</div>
-    );
-
   // JSX
   return (
     <div className={rootClassName}>
       <img src={imageSrc} />
       {!!caption && <div className="CardImageCaption">{caption}</div>}
-
-      {caption === undefined ? null : (
-        <div className="CardImageCaption">{caption}</div>
-      )}
-      {caption !== undefined && (
-        <div className="CardImageCaption">{caption}</div>
-      )}
-      {captionElement}
-      {captionElement2}
     </div>
   );
 }
