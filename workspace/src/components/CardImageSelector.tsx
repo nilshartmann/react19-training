@@ -2,6 +2,13 @@ import { useState } from "react";
 
 import CardImage from "./CardImage.tsx";
 
+// Image-A -> Caption A Decoration A
+// Image-B -> Caption B Decoration B
+
+// after reording:
+// Image-B -> Caption B Decoration B
+// Image-A -> Caption A Decoration A
+
 type CardImageSelectorProps = {
   // imageNames: Array<string>
 
@@ -22,7 +29,40 @@ export default function CardImageSelector({
   // const setFirstVisibleImageIndex = state[1];
 
   // Array Destructuring Operator of JavaScript [ ... ] = ...
+
+  // individual states
+  //   might be easier to refactor later
+  // complex state (object)
+  //   easier to save in browser storage for example
+  //   rerendering optimization
+
   const [firstVisibleImageIndex, setFirstVisibleImageIndex] = useState(0);
+  const [selectedImageName, setSelectedImageName] = useState<string | null>(
+    null,
+  );
+
+  // function handleClick() {
+  //   setFirstVisibleImageIndex(0);
+  //   setSelectedImageName(null);
+  // }
+
+  // "realistic" example of complex state:
+  // const apiCall = {
+  //   isRunning: true,
+  //   isError: false,
+  //   data: null
+  // }
+  //
+  // const finishedApiCall = {
+  //   isRunning: false,
+  //   data: "...."
+  // }
+
+  // "complex" state
+  const x = useState({
+    firstVisibleImageIndex: 0,
+    selectedImage: "...",
+  });
 
   // const firstVisibleImageIndex = 0;
   const visibleImageNames = imageNames.slice(
@@ -50,12 +90,21 @@ export default function CardImageSelector({
         Previous
       </button>
       {visibleImageNames.map((imageName) => (
-        <CardImage
+        <div
           key={imageName}
-          name={imageName}
-          decoration={decoration}
-          caption={caption}
-        />
+          className={
+            selectedImageName === imageName
+              ? "CardImageSelectorImage selected"
+              : "CardImageSelectorImage"
+          }
+          onClick={() => setSelectedImageName(imageName)}
+        >
+          <CardImage
+            name={imageName}
+            decoration={decoration}
+            caption={caption}
+          />
+        </div>
       ))}
       <button
         type={"button"}
