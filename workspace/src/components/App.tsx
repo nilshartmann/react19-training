@@ -16,7 +16,14 @@ export default function App() {
   return (
     <div className={"container mx-auto pt-8"}>
       <CardImageSelector
-        imageNames={["01.png", "02.png", "03.png"]}
+        imageNames={[
+          "01.png",
+          "02.png",
+          "03.png",
+          "04.png",
+          "05.png",
+          "06.png",
+        ]}
         decoration={true}
         caption={"Caption"}
       />
