@@ -72,7 +72,7 @@ test("message must be at least five chars long", () => {
     CardSchema.parse({
       message: "",
       imageDecoration: false,
-      imageCaption: null,
+      imageCaption: "My Caption",
     }),
   ).toThrowError();
 
@@ -80,9 +80,21 @@ test("message must be at least five chars long", () => {
     CardSchema.parse({
       message: "Moin",
       imageDecoration: false,
-      imageCaption: null,
+      imageCaption: "My Caption",
     }),
   ).toThrowError();
+});
+
+test("message should have own error message", () => {
+  const result = CardSchema.safeParse({
+    message: "Moin",
+    imageDecoration: false,
+    imageCaption: "Hello React",
+  });
+  expect(result.error);
+  expect(result.error?.issues[0].message).toBe(
+    "Please enter at least 5 chars for the message.",
+  );
 });
 
 test("ICardSchema TypeScript type should be correct", () => {
