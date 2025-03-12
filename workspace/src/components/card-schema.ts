@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-// remove the ":any" type annotation before constructing your schema!
-export const CardSchema: any = {};
+export const CardSchema = z.object({
+  message: z.string().min(5, "Please enter at least 5 chars for the message."),
+  imageDecoration: z.boolean(),
+  imageCaption: z.string().optional(),
+});
 
 export type ICardSchema = z.infer<typeof CardSchema>;
