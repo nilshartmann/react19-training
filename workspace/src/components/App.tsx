@@ -18,7 +18,23 @@ export default function App() {
   const [selectedImageName, setSelectedImageName] = useState<string | null>(
     null,
   );
-  const [isCardSelectorVisible, setCardSelectorVisible] = useState(true);
+  const [isCardSelectorVisible, setCardSelectorVisible] = useState(true); // FALSE!!!!
+  // let name = "Klaus"
+  // DO NOT DO THIS IN YOUR REACT COMPONENT!!!!!!!!!!!!!!!!!!!!!!!
+  // JavaScript: CLOSURE functions
+  // Java: lambdas are NO closure function
+  // setTimeout( () => {
+  //   name = "Susi";
+  //   console.log("run after 5000 seconds")
+  //   setCardSelectorVisible(!isCardSelectorVisible);  // true
+  //   setCardSelectorVisible( currentIsSelectorVisible => !currentIsSelectorVisible )
+  // }, 5000)
+  //
+  // function doSomething() {
+  //   console.log(isCardSelectorVisible); // "false"
+  //   setCardSelectorVisible(!isCardSelectorVisible); // setCardSelectorVisible(true)
+  //   console.log(isCardSelectorVisible);
+  // }
 
   const handleSelectedImageChange = (newSelectedImage: string) => {
     //
