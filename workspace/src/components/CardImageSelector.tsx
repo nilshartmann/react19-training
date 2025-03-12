@@ -18,8 +18,15 @@ type CardImageSelectorProps = {
   caption?: string;
 
   selectedImageName: string | null;
+
+  // onSelectedImageNameChange2: (newSelectedImage: string) => void;
+
   onSelectedImageNameChange(newSelectedImage: string): void;
 };
+
+// function onSelectedImageNameChange(newSelectedImage: string): void {
+//
+// }
 
 // interface SelectedImageNameChangeListenerInJava {
 //   void onSelectedImageNameChange(String newSelectedImage);
