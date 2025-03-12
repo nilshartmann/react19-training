@@ -16,12 +16,21 @@ type CardImageSelectorProps = {
 
   decoration: boolean;
   caption?: string;
+
+  selectedImageName: string | null;
+  onSelectedImageNameChange(newSelectedImage: string): void;
 };
+
+// interface SelectedImageNameChangeListenerInJava {
+//   void onSelectedImageNameChange(String newSelectedImage);
+// }
 
 export default function CardImageSelector({
   imageNames,
   decoration,
   caption,
+  selectedImageName,
+  onSelectedImageNameChange,
 }: CardImageSelectorProps) {
   // state
   // const state = useState(0);
@@ -37,9 +46,9 @@ export default function CardImageSelector({
   //   rerendering optimization
 
   const [firstVisibleImageIndex, setFirstVisibleImageIndex] = useState(0);
-  const [selectedImageName, setSelectedImageName] = useState<string | null>(
-    null,
-  );
+  // const [selectedImageName, setSelectedImageName] = useState<string | null>(
+  //   null,
+  // );
 
   // function handleClick() {
   //   setFirstVisibleImageIndex(0);
@@ -97,7 +106,7 @@ export default function CardImageSelector({
               ? "CardImageSelectorImage selected"
               : "CardImageSelectorImage"
           }
-          onClick={() => setSelectedImageName(imageName)}
+          onClick={() => onSelectedImageNameChange(imageName)}
         >
           <CardImage
             name={imageName}

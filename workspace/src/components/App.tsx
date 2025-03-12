@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import CardImage from "./CardImage.tsx";
 import CardImageSelector from "./CardImageSelector.tsx";
 
@@ -12,10 +14,25 @@ export default function App() {
     </>
   );
 
+  const [selectedImageName, setSelectedImageName] = useState<string | null>(
+    null,
+  );
+
+  const handleSelectedImageChange = (newSelectedImage: string) => {
+    //
+    if (newSelectedImage === selectedImageName) {
+      setSelectedImageName(null);
+    } else {
+      setSelectedImageName(newSelectedImage);
+    }
+  };
+
   // return <div className={"container mx-auto pt-8"}>{myImages}</div>;
   return (
     <div className={"container mx-auto pt-8"}>
       <CardImageSelector
+        selectedImageName={selectedImageName}
+        onSelectedImageNameChange={handleSelectedImageChange}
         imageNames={[
           "01.png",
           "02.png",
