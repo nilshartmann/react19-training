@@ -3,6 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 import { CardSchema, ICardSchema } from "./card-schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CardImageSelector from "./CardImageSelector.tsx";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ky from "ky";
 
 // react-hook-form
 
@@ -13,6 +15,21 @@ export default function CardEditor() {
       message: "",
     },
     mode: "onBlur",
+  });
+
+  const queryClient = useQueryClient();
+
+  const saveCardMutation = useMutation({
+    async mutationFn(data: ICardSchema) {
+      return ky.post("http://localhost:7100/cards", {
+        json: data,
+      });
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["cards", "list"],
+      });
+    },
   });
 
   const [currentMessage, currentImageCaption, currentImageDecoration] =
@@ -28,6 +45,7 @@ export default function CardEditor() {
   const saveForm = (data: ICardSchema) => {
     // save form to backend api
     console.log("Save form", data);
+    saveCardMutation.mutate(data);
   };
 
   // const handleError = (err: any) => {
@@ -109,6 +127,10 @@ export default function CardEditor() {
           Clear
         </button>
       </form>
+      {saveCardMutation.isError && <p>Saving failed!</p>}
+      {saveCardMutation.isPending && (
+        <p>Please wait until data has been saved.</p>
+      )}
       <SubmitButton />
     </div>
   );

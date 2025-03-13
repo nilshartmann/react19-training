@@ -10,7 +10,7 @@ export default function CardList() {
   // Suspense
 
   const result = useSuspenseQuery({
-    queryKey: ["cards", "lists"],
+    queryKey: ["cards", "list"],
     async queryFn() {
       const responseJson = await ky.get("http://localhost:7100/cards").json();
       const cards = CardDtoSchema.array().parse(responseJson);
