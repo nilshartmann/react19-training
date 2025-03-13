@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const CardSchema = z.object({
   message: z.string().min(5, "Please enter at least 5 chars for the message."),
+  imageName: z.string(),
   imageDecoration: z.boolean(),
   imageCaption: z.string().optional(),
 });

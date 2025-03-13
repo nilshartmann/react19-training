@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { CardSchema, ICardSchema } from "./card-schema.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CardImageSelector from "./CardImageSelector.tsx";
 
 // react-hook-form
 
@@ -11,8 +12,13 @@ export default function CardEditor() {
     defaultValues: {
       message: "",
     },
-    mode: "onChange",
+    mode: "onBlur",
   });
+
+  const [currentMessage, currentImageCaption, currentImageDecoration] =
+    form.watch(["message", "imageCaption", "imageDecoration"]);
+
+  console.log("Rendering Card Editor", new Date().toISOString());
 
   // form.
 
@@ -27,7 +33,6 @@ export default function CardEditor() {
   // const handleError = (err: any) => {
   //   console.log("Could not save form", err);
   // };
-
   // const ourProperties = {
   //   onChange() { /* ... */},
   //   value: "Good morning"
@@ -45,6 +50,10 @@ export default function CardEditor() {
           Message
           <textarea {...form.register("message")} />
         </label>
+        <p>
+          You have to enter {5 - currentMessage.length} chars to make a valid
+          message
+        </p>
 
         <p>{form.formState.errors.message?.message}</p>
 
@@ -62,8 +71,43 @@ export default function CardEditor() {
           <input type={"text"} {...form.register("imageCaption")} />
         </label>
 
+        <label>
+          Select the Image for your Card
+          <Controller
+            name={"imageName"}
+            control={form.control}
+            render={(opts) => {
+              return (
+                <CardImageSelector
+                  selectedImageName={opts.field.value}
+                  onSelectedImageNameChange={(newSelectedImage) => {
+                    if (newSelectedImage === opts.field.value) {
+                      opts.field.onChange(null);
+                    } else {
+                      opts.field.onChange(newSelectedImage);
+                    }
+                  }}
+                  imageNames={[
+                    "01.png",
+                    "02.png",
+                    "03.png",
+                    "04.png",
+                    "05.png",
+                    "06.png",
+                  ]}
+                  decoration={currentImageDecoration}
+                  caption={currentImageCaption}
+                />
+              );
+            }}
+          />
+        </label>
+        <p>{form.formState.errors.imageName?.message}</p>
+
         {/*<button type={"submit"}>Save</button>*/}
-        <button type={"button"}>Clear</button>
+        <button type={"button"} onClick={() => form.reset()}>
+          Clear
+        </button>
       </form>
       <SubmitButton />
     </div>
