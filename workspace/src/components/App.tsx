@@ -3,6 +3,9 @@ import { useState } from "react";
 import CardImage from "./CardImage.tsx";
 import CardImageSelector from "./CardImageSelector.tsx";
 import CardEditor from "./CardEditor.tsx";
+import ky from "ky";
+import { CardDtoSchema, ICardDtoSchema } from "../types.ts";
+import { ICardSchema } from "./card-schema.ts";
 
 // eslint
 export default function App() {
@@ -46,9 +49,47 @@ export default function App() {
     }
   };
 
+  // const [cards, setCards] = useState<ICardDtoSchema[]>([]);
+
+  // JavaScript "async" function
+  const handleLoadClick = async () => {
+    const responseJson = await ky.get("http://localhost:7100/cards").json();
+    const cards = CardDtoSchema.array().parse(responseJson);
+    // setCards(cards);
+    // ...
+    console.log("Returned data from server", cards);
+  };
+
+  const handleSaveClick = async () => {
+    const data: ICardSchema = {
+      imageName: "01.png",
+      imageCaption: "Hello",
+      imageDecoration: true,
+      message: "Hello Backend",
+    };
+
+    const response = await ky.post("http://localhost:7100/cards", {
+      json: data,
+      // headers: {
+      //   "Authentication": "Bearer 12345678"
+      // }
+    });
+
+    if (response.status !== 201) {
+      // "CREATED"
+      console.error("Saving failed", response.status);
+      return;
+    }
+
+    const responseDataFromBody = await response.json();
+    console.log("Response", responseDataFromBody);
+  };
+
   // return <div className={"container mx-auto pt-8"}>{myImages}</div>;
   return (
     <div className={"container mx-auto pt-8"}>
+      <button onClick={handleLoadClick}>Load Data!</button>
+      <button onClick={handleSaveClick}>Save Data!</button>
       <CardEditor />
       {/*<button onClick={() => setCardSelectorVisible(!isCardSelectorVisible)}>*/}
       {/*  Show/hide Selector*/}
