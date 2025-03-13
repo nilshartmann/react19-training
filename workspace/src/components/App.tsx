@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import CardImage from "./CardImage.tsx";
 import CardImageSelector from "./CardImageSelector.tsx";
@@ -6,6 +6,21 @@ import CardEditor from "./CardEditor.tsx";
 import ky from "ky";
 import { CardDtoSchema, ICardDtoSchema } from "../types.ts";
 import { ICardSchema } from "./card-schema.ts";
+import CardList from "./CardList.tsx";
+import LoadingIndicator from "./LoadingIndicator.tsx";
+import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+
+function CardErrorFallback(props: FallbackProps) {
+  return (
+    <div>
+      <h1>Error!</h1>
+      {props.error.toString()}
+
+      <button onClick={() => props.resetErrorBoundary()}>Retry</button>
+    </div>
+  );
+}
 
 // eslint
 export default function App() {
@@ -68,6 +83,8 @@ export default function App() {
       message: "Hello Backend",
     };
 
+    // const myApiKy = ky.extend();
+
     const response = await ky.post("http://localhost:7100/cards", {
       json: data,
       // headers: {
@@ -85,9 +102,32 @@ export default function App() {
     console.log("Response", responseDataFromBody);
   };
 
+  const resetQuery = useQueryErrorResetBoundary();
+
+  // react-error-boundary (npm package)
+
   // return <div className={"container mx-auto pt-8"}>{myImages}</div>;
   return (
     <div className={"container mx-auto pt-8"}>
+      <ErrorBoundary
+        onReset={resetQuery.reset}
+        FallbackComponent={CardErrorFallback}
+      >
+        <Suspense fallback={<h1>Please wait while cards are loading</h1>}>
+          <CardList />
+        </Suspense>
+      </ErrorBoundary>
+
+      {/*<ErrorBoundary fallback={<h1>Loading data failed</h1>}>*/}
+      {/*  <Suspense fallback={<h1>Please wait while cards are loading</h1>}>*/}
+      {/*    <CardList />*/}
+      {/*  </Suspense>*/}
+      {/*</ErrorBoundary>*/}
+
+      {/*<Suspense fallback={<h1>Please wait while cards are loading</h1>}>*/}
+      {/*  <UserList />*/}
+      {/*</Suspense>*/}
+
       <button onClick={handleLoadClick}>Load Data!</button>
       <button onClick={handleSaveClick}>Save Data!</button>
       <CardEditor />
