@@ -31,8 +31,8 @@
    - You can use `zod` to parse and validate the result.
      - The schema is an _array_ of `CardDtoSchema` objects (already defined in `src/types.ts`)
    - Use the validated/parsed result as return value of your `queryFn`
-3. Visualize the result of `useQuery`:
-   - Your `CardCList` component should render a root `div` with CSS class `CardList`
+3. Visualize the result of `useSuspenseQuery`:
+   - Your `CardList` component should render a root `div` with CSS class `CardList`
    - Inside the root div, use `map` to render a list of cards
      - Each card in the list should have a `div` as root element with CSS class `CardListCard`
        - remember to set the `key` property!
