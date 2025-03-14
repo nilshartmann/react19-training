@@ -39,7 +39,19 @@ app.get("/cards", (req, res) => {
   const orderBy = req.query.orderBy || "date";
 
   if (orderBy === "date") {
-    result.sort((a, b) => b.id.localeCompare(a.id));
+    result.sort((a, b) => {
+      const numA = parseInt(a.id.slice(1), 10); // Removes the first letter and converts the rest to number
+      const numB = parseInt(b.id.slice(1), 10);
+
+      // Compare the numbers and return the result
+      if (numA > numB) {
+        return -1; // a comes first if its number is higher
+      } else if (numA < numB) {
+        return 1; // b comes first if its number is higher
+      } else {
+        return 0; // numbers are equal, maintain original order
+      }
+    })
   } else if (orderBy === "likes") {
     result.sort((a, b) => b.likes - a.likes);
   }
