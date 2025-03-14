@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./create-query-client.ts";
 
 import { routeTree } from "./routeTree.gen";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createRouter({ routeTree });
 
@@ -24,5 +25,6 @@ if (rootElement === null) {
 createRoot(rootElement).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    <ReactQueryDevtools />
   </QueryClientProvider>,
 );
