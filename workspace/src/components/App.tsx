@@ -128,9 +128,9 @@ export default function App() {
       {/*  <UserList />*/}
       {/*</Suspense>*/}
 
-      <button onClick={handleLoadClick}>Load Data!</button>
-      <button onClick={handleSaveClick}>Save Data!</button>
-      <CardEditor />
+      {/*<button onClick={handleLoadClick}>Load Data!</button>*/}
+      {/*<button onClick={handleSaveClick}>Save Data!</button>*/}
+      {/*<CardEditor />*/}
       {/*<button onClick={() => setCardSelectorVisible(!isCardSelectorVisible)}>*/}
       {/*  Show/hide Selector*/}
       {/*</button>*/}

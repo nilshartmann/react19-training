@@ -22,6 +22,7 @@ export default function CardList() {
 
   return (
     <div className={"CardList"}>
+      <Link to={"/create"}>Create your own greeting card</Link>
       {allCards.map((card) => (
         <div key={card.id} className={"CardListCard"}>
           <CardImage
