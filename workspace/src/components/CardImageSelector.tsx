@@ -113,7 +113,10 @@ export default function CardImageSelector({
               ? "CardImageSelectorImage selected"
               : "CardImageSelectorImage"
           }
-          onClick={() => onSelectedImageNameChange(imageName)}
+          onClick={(e) => {
+            e.preventDefault();
+            onSelectedImageNameChange(imageName);
+          }}
         >
           <CardImage
             name={imageName}
