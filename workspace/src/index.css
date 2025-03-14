@@ -16,7 +16,6 @@
     @apply text-lg font-bold;
   }
 
-  button,
   a {
     @apply cursor-pointer text-blue-700 underline;
   }
@@ -90,11 +89,16 @@
   .CardImageSelectorImage {
     @apply cursor-pointer rounded-lg border-2 border-white p-0.5;
   }
-  .CardImageSelectorImage:hover {
-    @apply border-amber-600;
+
+  button.CardImageSelectorImage {
+    @apply bg-white;
   }
-  .CardImageSelectorImage.selected {
-    @apply border-amber-500;
+
+  button.CardImageSelectorImage:hover {
+    @apply border-rose-300;
+  }
+  button.CardImageSelectorImage.selected {
+    @apply border-indigo-500;
   }
 
   .CardList {
