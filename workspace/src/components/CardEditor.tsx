@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CardImageSelector from "./CardImageSelector.tsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ky from "ky";
+import { Link } from "@tanstack/react-router";
 
 // react-hook-form
 
@@ -21,9 +22,10 @@ export default function CardEditor() {
 
   const saveCardMutation = useMutation({
     async mutationFn(data: ICardSchema) {
-      return ky.post("http://localhost:7100/cards", {
+      await ky.post("http://localhost:7100/cards", {
         json: data,
       });
+      return "Great! New Card created";
     },
     onSuccess() {
       queryClient.invalidateQueries({
@@ -127,11 +129,13 @@ export default function CardEditor() {
           Clear
         </button>
       </form>
-      {saveCardMutation.isError && <p>Saving failed!</p>}
+      {saveCardMutation.isSuccess && saveCardMutation.data}
+      {saveCardMutation.isError && <p>{saveCardMutation.error.message}</p>}
       {saveCardMutation.isPending && (
         <p>Please wait until data has been saved.</p>
       )}
       <SubmitButton />
+      <Link to={"/"}>Back to Card List</Link>
     </div>
   );
 }
