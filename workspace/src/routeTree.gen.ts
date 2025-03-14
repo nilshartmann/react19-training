@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as CreateImport } from './routes/create'
 import { Route as IndexImport } from './routes/index'
+import { Route as CardsCardIdImport } from './routes/cards.$cardId'
 
 // Create/Update Routes
 
@@ -25,6 +26,12 @@ const CreateRoute = CreateImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CardsCardIdRoute = CardsCardIdImport.update({
+  id: '/cards/$cardId',
+  path: '/cards/$cardId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateImport
       parentRoute: typeof rootRoute
     }
+    '/cards/$cardId': {
+      id: '/cards/$cardId'
+      path: '/cards/$cardId'
+      fullPath: '/cards/$cardId'
+      preLoaderRoute: typeof CardsCardIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
+  '/cards/$cardId': typeof CardsCardIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create'
+  fullPaths: '/' | '/create' | '/cards/$cardId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create'
-  id: '__root__' | '/' | '/create'
+  to: '/' | '/create' | '/cards/$cardId'
+  id: '__root__' | '/' | '/create' | '/cards/$cardId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
+  CardsCardIdRoute: typeof CardsCardIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
+  CardsCardIdRoute: CardsCardIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/create"
+        "/create",
+        "/cards/$cardId"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/create": {
       "filePath": "create.tsx"
+    },
+    "/cards/$cardId": {
+      "filePath": "cards.$cardId.tsx"
     }
   }
 }

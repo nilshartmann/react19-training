@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { CardDtoSchema } from "../types.ts";
 import CardImage from "./CardImage.tsx";
+import { Link } from "@tanstack/react-router";
 
 // todo: LOOK AT THE CACHE CONFIGURATION!
 
@@ -31,6 +32,14 @@ export default function CardList() {
             caption={card.image.caption}
           />
           <p>{card.message}</p>
+          <Link
+            to={"/cards/$cardId"}
+            params={{
+              cardId: card.id,
+            }}
+          >
+            Show card!
+          </Link>
         </div>
       ))}
     </div>
